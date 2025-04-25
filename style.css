@@ -6,14 +6,22 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 100vh;
+    justify-content: flex-start;
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
 }
 
 h1 {
-    font-size: 3rem;
+    font-size: 2.5rem;
     margin-bottom: 20px;
     text-shadow: 0 0 10px #00ff99;
+}
+
+#scoreBoard {
+    font-size: 1.2em;
+    margin-bottom: 10px;
 }
 
 canvas {
@@ -21,16 +29,23 @@ canvas {
     border: 3px solid #00ffcc;
     box-shadow: 0 0 20px #00ffcc;
     margin-bottom: 20px;
+    width: 90vw;
+    max-width: 500px;
+    height: 90vw;
+    max-height: 500px;
 }
 
 .controls {
     display: flex;
-    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
 }
 
 button {
     padding: 12px 24px;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     border: none;
     border-radius: 8px;
     cursor: pointer;
@@ -38,6 +53,7 @@ button {
     color: black;
     transition: 0.3s;
     box-shadow: 0 0 10px #00ff99;
+    min-width: 100px;
 }
 
 button:hover {
@@ -49,18 +65,36 @@ button:hover {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(0,0,0,0.85);
-    padding: 40px;
+    background: rgba(0, 0, 0, 0.85);
+    padding: 30px;
     border-radius: 20px;
     text-align: center;
     box-shadow: 0 0 20px red;
-    font-size: 2rem;
+    font-size: 1.8rem;
+    z-index: 1000;
 }
 
 .hidden {
     display: none;
 }
-#scoreBoard {
-    font-size: 1.2em;
-    margin-bottom: 10px;
+
+/* Media Queries for Mobile */
+@media (max-width: 500px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    button {
+        font-size: 1rem;
+        padding: 10px 20px;
+    }
+
+    #gameOver {
+        font-size: 1.5rem;
+        padding: 20px;
+    }
+
+    #scoreBoard {
+        font-size: 1rem;
+    }
 }
