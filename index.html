@@ -5,25 +5,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snake Game</title>
     <link href="style.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background: #f0f0f0;
+        }
+
+        h1 {
+            margin: 20px 0;
+        }
+
+        #scoreBoard {
+            margin: 10px 0;
+        }
+
+        canvas {
+            width: 90vw;
+            max-width: 500px;
+            height: 90vw;
+            max-height: 500px;
+            border: 2px solid #333;
+            background: white;
+        }
+
+        .controls {
+            margin: 10px 0;
+        }
+
+        .controls button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+        }
+
+        #gameOver {
+            display: none;
+            margin-top: 20px;
+        }
+
+        #gameOver.show {
+            display: block;
+        }
+
+        @media (min-width: 600px) {
+            canvas {
+                width: 500px;
+                height: 500px;
+            }
+        }
+    </style>
 </head>
 <body>
     <h1>🐍 Snake Game</h1>
+
     <div id="scoreBoard">
-            <p>
-                
-                High Score: <span id="highScore">0</span>
-            </p>
+        <p>High Score: <span id="highScore">0</span></p>
         <p>Score: <span id="score">0</span></p>
-    </div>       
+    </div>
+
     <canvas id="gameCanvas" width="500" height="500"></canvas>
+
     <div class="controls">
         <button id="startBtn">Start</button>
         <button id="stopBtn">Stop</button>
     </div>
-    <div id="gameOver" class="hidden">
+
+    <div id="gameOver">
         <p>Game Over</p>
         <button onclick="restartGame()">Restart</button>
     </div>
+
     <script src="snake.js"></script>
 </body>
 </html>
