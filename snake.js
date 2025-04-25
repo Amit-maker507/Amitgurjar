@@ -8,14 +8,46 @@ let food = {
     x: Math.floor(Math.random() * 25) * box,
     y: Math.floor(Math.random() * 25) * box
 };
-
 let score = 0;
+let game;
+let highScore = localStorage.getItem("highScore") || 0;
+document.getElementById("highScore").textContent = highScore;
 
+// Event listeners
 document.addEventListener("keydown", changeDirection);
 document.getElementById("startBtn").addEventListener("click", startGame);
 document.getElementById("stopBtn").addEventListener("click", stopGame);
 
-let game;
+// Mobile swipe support
+let touchStartX = 0;
+let touchStartY = 0;
+
+canvas.addEventListener("touchstart", e => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+});
+
+canvas.addEventListener("touchmove", e => {
+    if (!touchStartX || !touchStartY) return;
+
+    const touchEndX = e.touches[0].clientX;
+    const touchEndY = e.touches[0].clientY;
+
+    const diffX = touchEndX - touchStartX;
+    const diffY = touchEndY - touchStartY;
+
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+        if (diffX > 0 && direction !== "LEFT") direction = "RIGHT";
+        else if (diffX < 0 && direction !== "RIGHT") direction = "LEFT";
+    } else {
+        if (diffY > 0 && direction !== "UP") direction = "DOWN";
+        else if (diffY < 0 && direction !== "DOWN") direction = "UP";
+    }
+
+    // Reset swipe start position
+    touchStartX = 0;
+    touchStartY = 0;
+});
 
 function changeDirection(event) {
     if (event.key === "ArrowLeft" && direction !== "RIGHT") direction = "LEFT";
@@ -49,7 +81,7 @@ function draw() {
     // Check collision with food
     if (headX === food.x && headY === food.y) {
         score += 10;
-        updateScore(); // 💡 Real-time update here
+        updateScore();
         food = {
             x: Math.floor(Math.random() * 25) * box,
             y: Math.floor(Math.random() * 25) * box
@@ -60,14 +92,15 @@ function draw() {
 
     const newHead = { x: headX, y: headY };
 
-    // Check game over (walls or self)
+    // Game over check
     if (
         headX < 0 || headX >= canvas.width ||
         headY < 0 || headY >= canvas.height ||
         collision(newHead, snake)
     ) {
         clearInterval(game);
-        document.getElementById("gameOver").classList.remove("hidden");
+        game = null;
+        document.getElementById("gameOver").classList.add("show");
     }
 
     snake.unshift(newHead);
@@ -75,6 +108,11 @@ function draw() {
 
 function updateScore() {
     document.getElementById("score").textContent = score;
+    if (score > highScore) {
+        highScore = score;
+        localStorage.setItem("highScore", highScore);
+        document.getElementById("highScore").textContent = highScore;
+    }
 }
 
 function collision(head, body) {
@@ -92,25 +130,8 @@ function stopGame() {
     game = null;
 }
 
-
-
-let highScore = localStorage.getItem("highScore") || 0;
-
-// Show initial high score when game starts
-document.getElementById("highScore").textContent = highScore;
-
-function updateScore() {
-    document.getElementById("score").textContent = score;
-
-    if (score > highScore) {
-        highScore = score;
-        localStorage.setItem("highScore", highScore);
-        document.getElementById("highScore").textContent = highScore;
-    }
-}
-
 function restartGame() {
-    document.getElementById("gameOver").classList.add("hidden");
+    document.getElementById("gameOver").classList.remove("show");
     snake = [{ x: 9 * box, y: 10 * box }];
     direction = "RIGHT";
     score = 0;
@@ -121,3 +142,4 @@ function restartGame() {
     };
     startGame();
 }
+
